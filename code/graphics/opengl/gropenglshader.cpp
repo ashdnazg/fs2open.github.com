@@ -218,6 +218,15 @@ static opengl_shader_variant_t GL_shader_variants[] = {
 
 static const int GL_num_shader_variants = sizeof(GL_shader_variants) / sizeof(opengl_shader_variant_t);
 
+struct opengl_shader_feature {
+	const char* shader_define;
+	std::function<bool()> feature_test;
+};
+
+static SCP_vector<opengl_shader_feature> GL_shader_features = {
+	{ "FEATURE_BINDLESS_TEXTURES", []() { return gr_opengl_is_capable(CAPABILITY_BINDLESS_TEXTURING); } },
+};
+
 opengl_shader_t *Current_shader = NULL;
 
 /**
@@ -306,6 +315,13 @@ static SCP_string opengl_shader_get_header(shader_type type_id, int flags, shade
 
 			if (type_id == variant.type_id && flags & variant.flag) {
 				sflags << "#define " << variant.flag_text << "\n";
+			}
+		}
+
+		// Check the global shader features
+		for (auto& feature : GL_shader_features) {
+			if (feature.feature_test()) {
+				sflags << "#define " << feature.shader_define << "\n";
 			}
 		}
 	}

@@ -1567,7 +1567,7 @@ bool gr_opengl_is_capable(gr_capability capability)
 	case CAPABILITY_TIMESTAMP_QUERY:
 		return GLAD_GL_ARB_timer_query != 0; // Timestamp queries are available from 3.3 onwards
 	case CAPABILITY_BINDLESS_TEXTURING:
-		return GLAD_GL_ARB_bindless_texture != 0;
+		return GLAD_GL_ARB_bindless_texture != 0 && !Cmdline_no_bindless_textures;
 	}
 
 	return false;

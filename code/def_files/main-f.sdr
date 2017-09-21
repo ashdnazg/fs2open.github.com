@@ -1,5 +1,7 @@
 
-#extension GL_ARB_bindless_texture : enable
+#ifdef FEATURE_BINDLESS_TEXTURES
+#extension GL_ARB_bindless_texture : require
+#endif
 
 #define MAX_LIGHTS 8
 #define LT_DIRECTIONAL		0
@@ -17,7 +19,8 @@ struct model_light {
 	vec3 direction;
 };
 
-#if defined(GL_ARB_bindless_texture)
+#ifdef FEATURE_BINDLESS_TEXTURES
+asdas
 layout (std140) uniform modelData {
 	mat4 modelViewMatrix;
 	mat4 modelMatrix;
